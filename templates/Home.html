@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>aventura</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('/static/pic1.jpeg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh; /* Make the background cover the entire viewport height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white; /* Set text color to white for better visibility on the background */
+            font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+        }
+
+        h1 {
+            font-size: 2em;
+        }
+
+        form {
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+            padding: 20px;
+            border-radius: 10px; /* Rounded edges */
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); /* White border to add a subtle glow */
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #444;
+            color: white;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        label,
+        textarea {
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        textarea {
+            padding: 10px;
+            max-width: 100%;
+            line-height: 1.5;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-shadow: 1px 1px 1px #999;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>start your adventure</h1>
+        <form action="/book" method="post">
+            <label for="userInput">Enter your prompt:</label>
+            <!-- <input type="text" id="userInput" name="userInput" required> -->
+            <!-- <textarea type="text" id="userInput" name="userInput" required rows="4" cols="30"></textarea> -->
+            <textarea id="story" name="story" rows="3" cols="33"></textarea>
+            <a href=book ></a><button type="submit">Submit</button></a>
+        </form>
+    </div>
+</body>
+</html>
