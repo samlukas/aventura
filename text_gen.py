@@ -98,13 +98,13 @@ def dalle_prompt_gen(story: str) -> str:
     answer = chat(chat_history, message)
     # print("DALLE PROMPT: " + answer)
 
-    answer = re.findall(r"Prompt:\s.+\.", answer)
-    if len(answer) == 0:
+    answer_ = re.findall(r"Prompt:\s.+\.", answer)
+    if len(answer_) == 0:
         answer = answer.strip().split(". ")[-1]
     else:
-        answer = answer[0][8:]
+        answer = answer_[0][8:]
 
-    prompt = "Create a digital art for a fantasy book. The scene is about" + answer
+    prompt = "A painting for a fantasy picture book of" + answer
     return prompt
 
 

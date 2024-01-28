@@ -2,9 +2,9 @@ import text_gen
 import image_gen
 
 OPTION_SETUP = "Provide 3 possible actions that the character can take as the story progresses. \
-    Use 3 to 7 words to write each options. \
+    Use 3 to 5 words to write each actions. \
     The user will choose one option within their next input. You will continue generating the story \
-    with the user's choice of action. The format for the list of options should be formatted like \
+    with the user's choice of action. The format for the list of actions should be formatted like \
     this:\nOptions:\n1.\n2.\n3."
 
 INITIAL_SETUP = ", provide the beginning of the fun, intriguing, whimsical and adventurous fantasy story. Use 100 to 150 words to \
@@ -68,6 +68,5 @@ def options(chat_history: list[str], story_list_length: int) -> list[str]:
 
 #         user_choice = input("Enter 1, 2, or 3: ") # user input
 #         print("_____\n" + story(chat_history, story_lst, choice=user_choice) + "\n_____")
-
 
 #     print("THE END")
