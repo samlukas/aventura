@@ -25,7 +25,7 @@ def image_url_gen(prompt: str) -> str:
 def image_download(url: str, page_no: int):
     image = requests.get(url).content
     
-    file_name = "static/images/page" + str(page_no) + ".jpg"
+    file_name = "static/images/" + str(page_no) + ".jpg"
     f = open(file_name,'wb')
     f.write(image) 
     f.close() 

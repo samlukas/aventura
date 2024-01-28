@@ -20,13 +20,11 @@ EXAMPLE_PROMPTS = "\nExample: An icy landscape under a starlit sky, where a magn
 WARNING = "Do not write explanations. Do not ask questions to the user. Do not type commands. \
     Do not ask the user for the next action. Do not write anything else except the story."
 
-SETUP_1 = "You are a creative storyteller who will help me build an iterative story that is \
+SETUP = "You are a creative storyteller who will help me build an iterative story that is \
     adventurous, vivid, descriptive and intriguing. The story will be in third-person point of view. \
     Your task is to generate story. You will first receive a general theme or the subject of the \
     story from the user. Respond with ‘.’ If you understand."
-SETUP_2 = ", provide the beginning of the vivid and adventurous story. Use 200 to 300 words to \
-    create this story. Do not write explanations. Do not ask questions to the user. Do not type \
-    commands. Do not ask the user for the next action. Do not write anything else except the story."
+
 
 DALLE_SETUP_1 = "You are an expert prompt engineer who writes short, concise and descriptive short \
     synthetic captions to create a prompt for text to image ML model, Dall-E. Your task is to write \
@@ -50,14 +48,10 @@ COVER_SETUP_3 = r"\"\nHere is the description: Provide a prompt with short synth
     describing the subject of the story and the style of the image. Use 20 to 30 words to create \
     a prompt for Dall-E. The prompt should be in a bracket like this: {Prompt}."
 
-def story_beginning(chat_history: list[str], story_lst: list[str], prompt: str) -> str:
-    message = SETUP_1
+
+def setup(chat_history: list[str]) -> str:
+    message = SETUP
     answer = chat(chat_history, message)
-
-    message = "Given the theme or subject \"" + prompt + SETUP_2
-    story = story_gen(chat_history, story_lst, message)
-
-    return story
 
 
 def chat(chat_history: list[str], message: str) -> str:
