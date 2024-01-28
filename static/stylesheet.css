@@ -6,10 +6,10 @@ body{
 }
 
 textarea {
-    width: 300px; /* Set your desired width */
-    height: 400px; /* Set your desired height */
+    width: 400px; /* Set your desired width */
+    height: 380px; /* Set your desired height */
     resize: none; /* Optional: Disable textarea resizing */
-    overflow: hidden; /* Optional: Hide scrollbars */
+    overflow: scroll; /* Optional: Hide scrollbars */
     background-color: #211a23; /* Set background color to match body background */
     color: transparent; /* Set text color to transparent */
     font-family: "baskerville", serif;
@@ -25,7 +25,7 @@ textarea {
     left: 0;
     width: 100%;
     padding: none;
-    margin-top: 30px;
+    margin-top: 10px;
     font-size: medium;
     font-family: "baskerville", serif;
     background-color: #211a23;
@@ -36,7 +36,7 @@ textarea {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    margin-top: 540px;
+    margin-top: 470px;
 }
 
 .button-container button {
@@ -49,7 +49,7 @@ textarea {
     display: inline-flex;
     fill: white;
     font-family: "baskerville", serif;
-    font-size: 16px;
+    font-size: 10px;
     font-weight: 600;
     height: 48px;
     justify-content: center;
@@ -80,7 +80,7 @@ textarea {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -70%);
     padding: 10px;
 }
 

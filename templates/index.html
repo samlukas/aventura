@@ -14,7 +14,7 @@
 <div class="flipbook-viewport">
 	<div class="container">
 		<div class="flipbook">
-			<div style="background-image:url(/static/pages/1.jpg)"></div>
+			<div style="background-image:url(/static/cover/front_cover.jpg)"></div>
 			<div>
 				<textarea type="textarea" id="story1" class="center" rows="20" readonly></textarea>
 
@@ -24,7 +24,7 @@
 					<button role="button" id="b3_1" onclick="sendDataToFlask(this)">option 3</button>
 				</div>
 			</div>
-			<div id=1 style="background-image:url(/static/pages/3.jpg)"></div>
+			<div id=1 style="background-image:url(/static/pages/1.png)"></div>
 			<div>
 				<textarea type="textarea" id="story2" class="center" rows="20" readonly></textarea>
 
@@ -34,7 +34,7 @@
 					<button role="button" id="b3_2" onclick="sendDataToFlask(this)">option 3</button>
 				</div>
 			</div>
-			<div id=2 style="background-image:url(/static/pages/5.jpg)"></div>
+			<div id=2 style="background-image:url(/static/pages/2.png)"></div>
 			<div>
 				<textarea type="textarea" id="story3" class="center" rows="20" readonly></textarea>
 
@@ -44,7 +44,7 @@
 					<button role="button" id="b3_3" onclick="sendDataToFlask(this)">option 3</button>
 				</div>
 			</div>
-			<div id=3 style="background-image:url(/static/pages/7.jpg)"></div>
+			<div id=3 style="background-image:url(/static/pages/3.png)"></div>
 			<div>
 				<textarea type="textarea" id="story4" class="center" rows="20" readonly></textarea>
 
@@ -54,15 +54,15 @@
 					<button role="button" id="b3_4" onclick="sendDataToFlask(this)">option 3</button>
 				</div>
 			</div>
-			<div id=4 style="background-image:url(/static/pages/9.jpg)"></div>
+			<div id=4 style="background-image:url(/static/pages/4.png)"></div>
 			<div>
 				<textarea type="textarea" id="story5" class="center" rows="20" readonly></textarea>
-				<div class="bottom-heading">
-					<h1>The end.</h1>
+				<div class="button-container">
+					<button role="button" id="download" onclick="combineAndDownload()">The end.</button>
 				</div>
 			</div>
-			<div id=5 style="background-image:url(/static/pages/11.jpg)"></div>
-			<div style="background-image:url(/static/pages/12.jpg)"></div>
+			<div id=5 style="background-image:url(/static/pages/5.png)"></div>
+			<div style="background-image:url(/static/cover/back_cover.jpg)"></div>
 		</div>
 	</div>
 </div>
@@ -70,6 +70,7 @@
 
 <script type="text/javascript">
 var page_num = 1;
+var page_num2 = 1;
 
 function sendDataToFlask(button) {
 	var choice = button.id[1];
@@ -96,10 +97,43 @@ async function initializePage() {
     // page_num++;  // Increment page_num after both operations are completed
 }
 
+function checkImageExistence(imageName, callback) {
+    var imageUrl = "/static/images/" + imageName;  // Construct the URL based on the "static" folder
+
+    var img = new Image();
+    img.src = imageUrl;
+
+    img.onload = function() {
+        console.log("Image exists and is loaded successfully.");
+        // You can perform additional logic here if needed
+        if (typeof callback === "function") {
+            callback(true);  // Invoke the callback with true if the image exists
+        }
+    };
+
+    img.onerror = function() {
+        console.log("Image does not exist or failed to load.");
+        // You can perform additional logic here if needed
+        if (typeof callback === "function") {
+            callback(false);  // Invoke the callback with false if the image does not exist
+        }
+    };
+}
+
 function setBackgroundImage() {
 	return new Promise(resolve => {
-		var imageUrl = '/static/images/' + page_num + '.jpg';  // Replace with the actual image URL
-		document.getElementById('' + page_num).style.backgroundImage = 'url(' + imageUrl + ')';
+		checkImageExistence(page_num2 + '.jpg', function(imageExists) {
+    	if (imageExists) {
+        	// Further logic if the image exists
+			var imageUrl = '/static/images/' + page_num2 + '.jpg';  // Replace with the actual image URL
+			document.getElementById('' + page_num2).style.backgroundImage = 'url(' + imageUrl + ')';
+			page_num2++;
+    	} else {
+        	// Further logic if the image does not exist
+			setTimeout(setBackgroundImage, 5000)
+    	}
+		});
+
 		resolve();
     });
 }
@@ -160,6 +194,30 @@ function fetchData() {
 		resolve();
     });
 }
+
+function combineAndDownload() {
+            // Make a request to the server to trigger image combination
+            fetch('/combine_images')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error combining images');
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    // Create a temporary link and trigger download
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'combined_image.jpg';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to combine images. Please try again.');
+                });
+        }
 
 // JavaScript code to fetch data from Flask in real-time
 document.addEventListener('DOMContentLoaded', function () {
