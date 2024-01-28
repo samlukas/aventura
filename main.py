@@ -15,7 +15,6 @@ STORY_SETUP = ". The story should be around 100 words. Do not write anything els
     Do not ask questions to the user. Do not type commands. Do not ask the user for the next action. \
     Do not write explanations. "
 
-
 def setup(chat_history: list[str]):
     # call this function before the first call of story()
     text_gen.setup(chat_history)
@@ -42,7 +41,7 @@ def options(chat_history: list[str], story_list_length: int) -> list[str]:
         message = OPTION_SETUP
     else:
         message = "Again, provide a list of 3 possible actions like before."
-    options = text_gen.options_gen(chat_history, message)
+    options = text_gen.options_gen(chat_history, message) 
     return options
 
 

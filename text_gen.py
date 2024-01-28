@@ -6,7 +6,8 @@ co = cohere.Client(os.environ.get("COHERE_API_KEY"))
 
 EXAMPLE_PROMPTS = "\nExample:a teenage sorcerer experimenting with spellbooks and mystical artifacts in a magical workshop filled with glowing crystals and levitating potions.\n\
     Example: a cowboy gunslinger walking the neon lit streets and alleys of a futuristic tokyo covered in a dense fog.\n\
-    Example: a big large happy kawaii fluffy cutest baby Shiba-inu puppy wearing kimono enjoy shopping in a futuristic abandoned city\n"
+    Example: a big large happy kawaii fluffy cutest baby Shiba-inu puppy wearing kimono enjoy shopping in a futuristic abandoned city\n\
+    Example: a wise owl guiding a group of curious youngsters through an enchanted forest, teaching them about wisdom and the magic of nature"
 
 WARNING = "Do not write explanations. Do not ask questions to the user. Do not type commands. \
     Do not ask the user for the next action. Do not write anything else except the story."
@@ -66,6 +67,9 @@ def options_gen(chat_history: list[str], message: str) -> list[str]:
     answer = chat(chat_history, message)
 
     options = re.findall(r"\d\..+\s", answer)
+
+    while len(options) < 3:
+        options.append("Continue the adventure.")
     for i in range(3):
         options[i] = re.sub(r"\d\.\s", "", options[i].strip())
 
@@ -74,6 +78,8 @@ def options_gen(chat_history: list[str], message: str) -> list[str]:
 
 def story_gen(chat_history: list[str], story_lst: list[str], message: str) -> str:
     answer = chat(chat_history, message)
+    if ": " in answer:
+        answer = answer.split(": ")[1] 
     story_lst.append(answer)
 
     return answer
@@ -92,7 +98,11 @@ def dalle_prompt_gen(story: str) -> str:
     answer = chat(chat_history, message)
     # print("DALLE PROMPT: " + answer)
 
-    answer = re.findall(r"Prompt:\s.+\.", answer)[0][8:]
+    answer = re.findall(r"Prompt:\s.+\.", answer)
+    if len(answer) == 0:
+        answer = answer.strip().split(". ")[-1]
+    else:
+        answer = answer[0][8:]
 
     prompt = "Create a digital art for a fantasy book. The scene is about" + answer
     return prompt
