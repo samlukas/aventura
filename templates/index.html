@@ -19,49 +19,49 @@
 				<textarea type="textarea" id="story1" class="center" rows="20" readonly></textarea>
 
 				<div class="button-container">
-					<button class="button-54" role="button">option 1</button>
-					<button class="button-54" role="button">option 2</button>
-					<button class="button-54" role="button">option 3</button>
+					<button role="button" id="b1_1" onclick="sendDataToFlask(this)">option 1</button>
+					<button role="button" id="b2_1" onclick="sendDataToFlask(this)">option 2</button>
+					<button role="button" id="b3_1" onclick="sendDataToFlask(this)">option 3</button>
 				</div>
 			</div>
-			<div style="background-image:url(/static/pages/3.jpg)"></div>
+			<div id=1 style="background-image:url(/static/pages/3.jpg)"></div>
 			<div>
 				<textarea type="textarea" id="story2" class="center" rows="20" readonly></textarea>
 
 				<div class="button-container">
-					<button class="button-54" role="button">option 1</button>
-					<button class="button-54" role="button">option 2</button>
-					<button class="button-54" role="button">option 3</button>
+					<button role="button" id="b1_2" onclick="sendDataToFlask(this)">option 1</button>
+					<button role="button" id="b2_2" onclick="sendDataToFlask(this)">option 2</button>
+					<button role="button" id="b3_2" onclick="sendDataToFlask(this)">option 3</button>
 				</div>
 			</div>
-			<div style="background-image:url(/static/pages/5.jpg)"></div>
+			<div id=2 style="background-image:url(/static/pages/5.jpg)"></div>
 			<div>
 				<textarea type="textarea" id="story3" class="center" rows="20" readonly></textarea>
 
 				<div class="button-container">
-					<button class="button-54" role="button">option 1</button>
-					<button class="button-54" role="button">option 2</button>
-					<button class="button-54" role="button">option 3</button>
+					<button role="button" id="b1_3" onclick="sendDataToFlask(this)">option 1</button>
+					<button role="button" id="b2_3" onclick="sendDataToFlask(this)">option 2</button>
+					<button role="button" id="b3_3" onclick="sendDataToFlask(this)">option 3</button>
 				</div>
 			</div>
-			<div style="background-image:url(/static/pages/7.jpg)"></div>
+			<div id=3 style="background-image:url(/static/pages/7.jpg)"></div>
 			<div>
 				<textarea type="textarea" id="story4" class="center" rows="20" readonly></textarea>
 
 				<div class="button-container">
-					<button class="button-54" role="button">option 1</button>
-					<button class="button-54" role="button">option 2</button>
-					<button class="button-54" role="button">option 3</button>
+					<button role="button" id="b1_4" onclick="sendDataToFlask(this)">option 1</button>
+					<button role="button" id="b2_4" onclick="sendDataToFlask(this)">option 2</button>
+					<button role="button" id="b3_4" onclick="sendDataToFlask(this)">option 3</button>
 				</div>
 			</div>
-			<div style="background-image:url(/static/pages/9.jpg)"></div>
+			<div id=4 style="background-image:url(/static/pages/9.jpg)"></div>
 			<div>
 				<textarea type="textarea" id="story5" class="center" rows="20" readonly></textarea>
 				<div class="bottom-heading">
 					<h1>The end.</h1>
 				</div>
 			</div>
-			<div style="background-image:url(/static/pages/11.jpg)"></div>
+			<div id=5 style="background-image:url(/static/pages/11.jpg)"></div>
 			<div style="background-image:url(/static/pages/12.jpg)"></div>
 		</div>
 	</div>
@@ -69,7 +69,40 @@
 
 
 <script type="text/javascript">
+var page_num = 1;
 
+function sendDataToFlask(button) {
+	var choice = button.id[1];
+	var dataToSend = {'option': choice};  // Replace with your actual data
+	fetch('/process_choice', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(dataToSend),
+	})
+	.then(response => response.json())
+	.then(data => {
+		console.log('Server Response:', data);
+		// Handle the server response as needed
+		return initializePage();
+	})
+	.catch(error => console.error('Error:', error));
+}
+
+async function initializePage() {
+	await fetchData();
+    await setBackgroundImage();
+    // page_num++;  // Increment page_num after both operations are completed
+}
+
+function setBackgroundImage() {
+	return new Promise(resolve => {
+		var imageUrl = '/static/images/' + page_num + '.jpg';  // Replace with the actual image URL
+		document.getElementById('' + page_num).style.backgroundImage = 'url(' + imageUrl + ')';
+		resolve();
+    });
+}
 function loadApp() {
 
 	// Create the flipbook
@@ -108,12 +141,49 @@ yepnope({
 	complete: loadApp
 });
 
-// JavaScript code to set a string in the textarea
-document.addEventListener('DOMContentLoaded', function () {
-            var myString = "This is the string you want to put into the textarea.";
+function fetchData() {
+	return new Promise(resolve => {
+	fetch('/get_story')
+		.then(response => response.json())
+		.then(data => {
+			console.log(data)
+			console.log("page num:", page_num)
+			document.getElementById('story' + page_num).value = data.story;
+			if (document.getElementById('b1_' + page_num) != null) {
+				document.getElementById('b1_' + page_num).textContent = data.option1;
+				document.getElementById('b2_' + page_num).textContent = data.option2;
+				document.getElementById('b3_' + page_num).textContent = data.option3;
+			}
+			page_num++;
+		})
+		.catch(error => console.error('Error:', error));
+		resolve();
+    });
+}
 
-            // Set the string in the textarea
-            document.getElementById('story1').value = myString;
+// JavaScript code to fetch data from Flask in real-time
+document.addEventListener('DOMContentLoaded', function () {
+    initializePage().then(() => {
+    	console.log('Page initialized with updated page_num:', page_num);
+	});
+	console.log("event listener triggered")
+			// function update() {
+			// 	setTimeout(function() {
+			// 		var storyTextArea = document.getElementById('story' + page_num);
+			// 		if (storyTextArea.value.trim() === "") {
+			// 			fetchData();
+			// 			console.log('story' + page_num);
+			// 		} else {
+			// 			console.log('story' + page_num);
+			// 		}
+			// 		update(); 
+			// 	}, 5000)
+			// }
+			// setTimeout(update, 10000);
+            // Set interval to fetch data periodically (adjust as needed)
+			// while (document.getElementById('story' + story_page).value == '') {
+			// 	setInterval(fetchData, 5000); // Fetch every 5 seconds
+			// }
         });
 
 </script>
