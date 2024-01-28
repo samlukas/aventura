@@ -1,6 +1,7 @@
 import re
+import os
 import cohere
-co = cohere.Client('OiUmG3lHaetSjXbrdx4Pwmvv0KecV5pGiMLsghFm')
+co = cohere.Client(os.environ.get("COHERE_API_KEY"))
 
 EXAMPLE_PROMPTS = "\nExample: An icy landscape under a starlit sky, where a magnificent frozen \
     waterfall flows over a cliff. In the center of the scene, a fire burns bright, its flames \
@@ -18,7 +19,7 @@ EXAMPLE_PROMPTS = "\nExample: An icy landscape under a starlit sky, where a magn
 WARNING = "Do not write explanations. Do not ask questions to the user. Do not type commands. \
     Do not ask the user for the next action. Do not write anything else except the story."
 SETUP_1 = "You are a creative storyteller who will help me build an iterative story that is \
-    adventurous, vivid, descriptive and intriguing. \The story will be in third-person point of view. \
+    adventurous, vivid, descriptive and intriguing. The story will be in third-person point of view. \
     Your task is to generate story. You will first receive a general theme or the subject of the \
     story from the user. Respond with ‘.’ If you understand."
 SETUP_2 = "\", provide the beginning of the vivid and adventurous story. The story should be around \
