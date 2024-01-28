@@ -7,11 +7,11 @@ OPTION_SETUP = "Provide 3 possible actions that the character can take to contin
     with the user's choice of action. The format for the list of options should be formatted like \
     this:\nOptions:\n1.\n2.\n3."
 
-INITIAL_SETUP = ", provide the beginning of the vivid and adventurous story. Use 200 to 300 words to \
+INITIAL_SETUP = ", provide the beginning of the intriguing and adventurous story. Use 100 to 150 words to \
     create this story. Do not write explanations. Do not ask questions to the user. Do not type \
     commands. Do not ask the user for the next action. Do not write anything else except the story."
 
-STORY_SETUP = ". The story should be around 200 words. Do not write anything else except the story. \
+STORY_SETUP = ". The story should be around 100 words. Do not write anything else except the story. \
     Do not ask questions to the user. Do not type commands. Do not ask the user for the next action. \
     Do not write explanations. "
 

@@ -21,10 +21,9 @@ WARNING = "Do not write explanations. Do not ask questions to the user. Do not t
     Do not ask the user for the next action. Do not write anything else except the story."
 
 SETUP = "You are a creative storyteller who will help me build an iterative story that is \
-    adventurous, vivid, descriptive and intriguing. The story will be in third-person point of view. \
-    Your task is to generate story. You will first receive a general theme or the subject of the \
+    adventurous, descriptive and intriguing. The story will be in third-person point of view. \
+    Your task is to generate the story. You will first receive a general theme or the subject of the \
     story from the user. Respond with ‘.’ If you understand."
-
 
 DALLE_SETUP_1 = "You are an expert prompt engineer who writes short, concise and descriptive short \
     synthetic captions to create a prompt for text to image ML model, Dall-E. Your task is to write \
@@ -33,8 +32,10 @@ DALLE_SETUP_1 = "You are an expert prompt engineer who writes short, concise and
     and involve storytelling. You will receive a story from the user. Respond with ‘.’ If you understand."
 DALLE_SETUP_2 = "These are some examples of the prompt for Dall-E. You will receive a story from \
     the user. Respond with ‘.’ If you understand." 
-DALLE_SETUP_3 ="\"\nProvide a prompt with short synthetic captions describing the subject of the \
-    story and the style of the image. Use 20 to 30 words to create the prompt for Dall-E."
+DALLE_SETUP_3 =r"\"\nFrom the given story, pick five to ten words that describe the core scene of \
+    the story. Then, provide a prompt for Dall-E with these words. You will create a prompt including the subject of the \
+    story and the style of the image. Use 20 to 30 words to create the prompt for Dall-E. \
+    The response should be in a bracket like this:\nWords:\nPrompt:\n"
 
 COVER_SETUP_1 = "You are an expert prompt engineer who writes short, concise and descriptive short \
     synthetic captions to create a prompt for text to image ML model, Dall-E. Your task is to write \
@@ -99,9 +100,10 @@ def dalle_prompt_gen(story: str) -> str:
 
     message = "Here is the story:\n\"" + story + DALLE_SETUP_3
     answer = chat(chat_history, message)
+    answer = re.findall(r"Prompt:\s.+\.", answer)[0][8:]
 
-    prompt = answer.strip() + " Digital art."
-
+    prompt = "Create a book illustration about " + answer
+    print(prompt)
     return prompt
 
 
