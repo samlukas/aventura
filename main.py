@@ -1,16 +1,16 @@
 import text_gen
 import image_gen
 
-OPTION_SETUP = "Provide list of 3 possibilities of what can happen next. Each option should \
-    briefly introduce the event from the adventure continued after this. Do not write more than \
-    5 words for each option. Do not write anything else except the story and the list. Do not \
-    ask questions to the user. Do not type commands. Do not ask the user for the next action. \
-    Do not write explanations. The user will choose one option within their next input. You will \
-    continue generating the story with the choice of the user as the main event of the adventure. \
-    The format for the list of options should be formatted like this:\nOptions:\n1.\n2.\n3."
+OPTION_SETUP = "Provide 3 possible actions that the character can take to continue the adventure. \
+    Each option should describe the character's action. Use 3 to 7 words to write each options. \
+    The user will choose one option within their next input. You will continue generating the story \
+    with the user's choice of action. The format for the list of options should be formatted like \
+    this:\nOptions:\n1.\n2.\n3."
+
 STORY_SETUP = ". The story should be around 200 words. Do not write anything else except the story. \
     Do not ask questions to the user. Do not type commands. Do not ask the user for the next action. \
     Do not write explanations. "
+
 
 if __name__ == "__main__":
     max_turns = 2
@@ -26,7 +26,6 @@ if __name__ == "__main__":
     print("_____\n" + story + "\n_____")
 
     cover_image_prompt = text_gen.cover_image_prompt_gen(story)
-    print("_____\nCOVER_PROMPT: " + cover_image_prompt + "\n_____")
     image_gen.image(cover_image_prompt, 1)
     
     message = OPTION_SETUP

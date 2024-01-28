@@ -16,14 +16,18 @@ EXAMPLE_PROMPTS = "\nExample: An icy landscape under a starlit sky, where a magn
     leaves and bark, brandishes a tiny sword and shield. He stands valiantly on a rock amidst a \
     blooming garden, surrounded by colorful flowers and towering plants. A determined expression is \
     painted on his face, ready to defend his garden kingdom."
+
 WARNING = "Do not write explanations. Do not ask questions to the user. Do not type commands. \
     Do not ask the user for the next action. Do not write anything else except the story."
+
 SETUP_1 = "You are a creative storyteller who will help me build an iterative story that is \
     adventurous, vivid, descriptive and intriguing. The story will be in third-person point of view. \
     Your task is to generate story. You will first receive a general theme or the subject of the \
     story from the user. Respond with ‘.’ If you understand."
-SETUP_2 = "\", provide the beginning of the vivid and adventurous story. The story should be around \
-    300 words."
+SETUP_2 = ", provide the beginning of the vivid and adventurous story. Use 200 to 300 words to \
+    create this story. Do not write explanations. Do not ask questions to the user. Do not type \
+    commands. Do not ask the user for the next action. Do not write anything else except the story."
+
 DALLE_SETUP_1 = "You are an expert prompt engineer who writes short, concise and descriptive short \
     synthetic captions to create a prompt for text to image ML model, Dall-E. Your task is to write \
     short synthetic captions for Dall-E to generate an image from a story provided by the user. The \
@@ -33,6 +37,7 @@ DALLE_SETUP_2 = "These are some examples of the prompt for Dall-E. You will rece
     the user. Respond with ‘.’ If you understand." 
 DALLE_SETUP_3 ="\"\nProvide a prompt with short synthetic captions describing the subject of the \
     story and the style of the image. Use 20 to 30 words to create the prompt for Dall-E."
+
 COVER_SETUP_1 = "You are an expert prompt engineer who writes short, concise and descriptive short \
     synthetic captions to create a prompt for text to image ML model, Dall-E. Your task is to write \
     short synthetic captions for Dall-E to generate a book cover image from a short scenario or \
@@ -43,7 +48,7 @@ COVER_SETUP_2 = "These are some examples of the prompt for Dall-E. You will rece
     from the user. Respond with ‘.’ If you understand."
 COVER_SETUP_3 = r"\"\nHere is the description: Provide a prompt with short synthetic captions \
     describing the subject of the story and the style of the image. Use 20 to 30 words to create \
-    a prompt for Dall-E. The prompt should be in a bracket like this: \{Prompt\}."
+    a prompt for Dall-E. The prompt should be in a bracket like this: {Prompt}."
 
 def story_beginning(chat_history: list[str], story_lst: list[str], prompt: str) -> str:
     message = SETUP_1
@@ -117,11 +122,11 @@ def cover_image_prompt_gen(prompt: str) -> str:
     message = "Here is the description:\n\"" + prompt + COVER_SETUP_3
     answer = chat(chat_history, message)
 
-    answer_ = re.findall(r"\{.+\}", answer)
+    answer_ = re.findall(r"{.+}", answer)
     if len(answer_) == 0:
         answer_ = prompt
     else:
-        answer_ = re.findall(r"\{.+\}", answer)[0][1:-1]
+        answer_ = re.findall(r"{.+}", answer)[0][1:-1]
 
     cover_prompt = "Create a book cover image of a fictional story about " + answer_ + " Digital art."
     return cover_prompt
@@ -129,12 +134,13 @@ def cover_image_prompt_gen(prompt: str) -> str:
 
 def title_gen(prompt: str) -> str:
     message = "Create a title of a fictional book with the provided theme or subject: \"" + prompt \
-        + r"\". The title should be in a bracket like this: \{Title\}."
+        + r"\". The title should be in a bracket like this: {Title}."
+    print(message)
     answer = chat([], message)
-    title = re.findall(r"\{.+\}", answer)
+    title = re.findall(r"{.+}", answer)
     if len(title) == 0:
         title = prompt
     else:
-        title = re.findall(r"\{.+\}", answer)[0][1:-1]    
+        title = re.findall(r"{.+}", answer)[0][1:-1]    
 
     return title
